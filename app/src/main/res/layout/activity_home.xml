@@ -24,9 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
 </androidx.constraintlayout.motion.widget.MotionLayout>
     <TextView
         android:layout_width="match_parent"

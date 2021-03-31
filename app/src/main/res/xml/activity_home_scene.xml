@@ -6,7 +6,6 @@
         motion:constraintSetStart="@id/start"
         motion:constraintSetEnd="@id/end"
         >
-        <OnClick motion:clickAction="transitionToEnd"/>
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
