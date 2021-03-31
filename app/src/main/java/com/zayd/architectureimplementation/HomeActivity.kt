@@ -10,7 +10,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var view: MaterialCardView
     private lateinit var home: MotionLayout
-    var clicks = 0;
+    private var clicks = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -22,19 +22,23 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setClickListener() {
         view.setOnClickListener {
-            if (clicks == 0) {
-                setTransition(home.currentState, R.id.end)
-                clicks += 1
-            } else if (clicks == 1) {
-                setTransition(home.currentState, R.id.endnew)
-                clicks += 1
-                view.radius = 0f
-            } else if (clicks == 2) {
-                startActivity(
-                    Intent(
-                        this, MainActivity::class.java
-                    ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                )
+            when (clicks) {
+                0 -> {
+                    setTransition(home.currentState, R.id.end)
+                    clicks += 1
+                }
+                1 -> {
+                    setTransition(home.currentState, R.id.endnew)
+                    clicks += 1
+                    view.radius = 0f
+                }
+                2 -> {
+                    startActivity(
+                        Intent(
+                            this, MainActivity::class.java
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    )
+                }
             }
         }
     }
