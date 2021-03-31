@@ -52,7 +52,8 @@ class TopStoriesFragment : Fragment(R.layout.fragment_top_stories) {
             })
 
             viewModel?.onError?.observe(viewLifecycleOwner, {
-                Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show()
+                if(it)
+                    Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show()
             })
         }
 
