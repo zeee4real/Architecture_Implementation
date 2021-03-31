@@ -13,13 +13,15 @@ import com.zayd.architectureimplementation.repository.topstories.TopStoriesDbRep
 import com.zayd.architectureimplementation.service.ApiService
 import kotlinx.coroutines.*
 
-class TopStoriesViewModel(private val apiService: ApiService?, context: Context)
-    : ViewModel() {
+class TopStoriesViewModel(private val apiService: ApiService?, context: Context) : ViewModel() {
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     private val topStoriesDbRepository: TopStoriesDbRepository
     var topStories: LiveData<List<TopStories>>? = null
+    private var _onError = MutableLiveData<Boolean>()
+    val onError: LiveData<Boolean>
+        get() = _onError
 
 
     init {
@@ -32,13 +34,15 @@ class TopStoriesViewModel(private val apiService: ApiService?, context: Context)
 
     private fun getTopStories() {
         apiService?.let {
-            TopStoriesRepository(it).getTopStories(object : TopStoriesRepository.NewsRepositoryInterface {
+            TopStoriesRepository(it).getTopStories(object :
+                TopStoriesRepository.NewsRepositoryInterface {
                 override fun onApiSuccess(response: TopHeadlinesModel) {
                     extractAndInsertData(response.articles)
+                    _onError.value = false
                 }
 
                 override fun onError() {
-
+                    _onError.value = true
                 }
             })
         }
@@ -60,10 +64,10 @@ class TopStoriesViewModel(private val apiService: ApiService?, context: Context)
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 val story: TopStories? = topStoriesDbRepository.getStory(item.url)
-                if(story == null)
+                if (story == null)
                     topStoriesDbRepository.insertTopStories(item)
                 else {
-                    if(story.publishedAt != item.publishedAt)
+                    if (story.publishedAt != item.publishedAt)
                         topStoriesDbRepository.insertAndReplaceStory(item)
                 }
             }

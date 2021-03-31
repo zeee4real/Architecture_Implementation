@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -45,8 +46,13 @@ class TopStoriesFragment : Fragment(R.layout.fragment_top_stories) {
                 }
             }
             job.join()
+
             viewModel?.topStories?.observe(viewLifecycleOwner, {
                 initRecyclerView(it)
+            })
+
+            viewModel?.onError?.observe(viewLifecycleOwner, {
+                Toast.makeText(context, "Error Occurred", Toast.LENGTH_SHORT).show()
             })
         }
 
