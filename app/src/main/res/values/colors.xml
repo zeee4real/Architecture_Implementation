@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="app_bar_bg">#004AAE</color>
     <color name="red">#BC3131</color>
+    <color name="orange">#FF9800</color>
+    <color name="green">#009688</color>
 </resources>
